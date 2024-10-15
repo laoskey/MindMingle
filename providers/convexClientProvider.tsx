@@ -4,9 +4,10 @@
 // import ReactDOM from "react-dom/client";
 // import App from "@/app";
 // import "./index.css";
-import { ClerkProvider, useAuth } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, SignedOut, SignInButton, useAuth, UserButton } from "@clerk/nextjs";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { AuthLoading, Authenticated, ConvexReactClient } from "convex/react";
+import { Button } from "@/components/ui/button";
 
 interface ConvexClientProviderProps {
   children: React.ReactNode;
@@ -24,6 +25,15 @@ export const ConvexClientProvider = ({ children }: ConvexClientProviderProps) =>
         client={convex}
       >
         {children}
+
+        <SignedOut>
+          <Button>
+            <SignInButton />
+          </Button>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
       </ConvexProviderWithClerk>
     </ClerkProvider>
   );

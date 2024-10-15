@@ -5,7 +5,8 @@ import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 import { ConvexClientProvider } from "@/providers/convexClientProvider";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { Button } from "@/components/ui/button";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -40,6 +41,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <main>{children}</main>
+
             <Toaster />
           </ThemeProvider>
         </ConvexClientProvider>
