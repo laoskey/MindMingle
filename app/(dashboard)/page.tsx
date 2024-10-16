@@ -1,5 +1,5 @@
 function DashboardPage() {
-  return <div>DashboardRoot page</div>;
+  return <div className='pl-8'>DashboardRoot page</div>;
 }
 
 export default DashboardPage;

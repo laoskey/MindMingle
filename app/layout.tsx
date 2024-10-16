@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/toaster";
 
-import { ConvexClientProvider } from "@/providers/convexClientProvider";
+import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 
