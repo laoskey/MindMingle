@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const protectedRoutes = createRouteMatcher(["/"]);
+// const protectedRoutes = createRouteMatcher(["/"]);
 
-export default clerkMiddleware((auth, req) => {
-  if (protectedRoutes(req)) {
-    auth().protect();
-  }
-});
+// export default clerkMiddleware((auth, req) => {
+//   if (protectedRoutes(req)) {
+//     auth().protect();
+//   }
+// });
 
-// export default clerkMiddleware();
+export default clerkMiddleware();
 
 export const config = {
   matcher: [
