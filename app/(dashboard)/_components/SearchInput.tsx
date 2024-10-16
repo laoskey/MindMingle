@@ -1,5 +1,5 @@
 "use client";
-import qs, { Stringifiable } from "query-string";
+import qs from "query-string";
 import { Search } from "lucide-react";
 import { useDebounceValue } from "usehooks-ts";
 import { ChangeEvent, useState, useEffect } from "react";
@@ -26,7 +26,7 @@ export function SearchInput() {
       { skipEmptyString: true, skipNull: true }
     );
     router.push(url);
-  }, [debounceValue, router]);
+  }, [router, value]);
   return (
     <div className=' w-full relative'>
       <Search className='absolute top-1/2 left-3 transform text-muted-foreground h-4 w-4 -translate-y-1/2' />
