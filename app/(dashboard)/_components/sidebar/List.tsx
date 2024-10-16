@@ -2,7 +2,6 @@
 
 import { useOrganizationList } from "@clerk/clerk-react";
 import { Item } from "./Item";
-import { Organization } from "@clerk/nextjs/server";
 
 export function List() {
   const { userMemberships } = useOrganizationList({ userMemberships: { infinite: true } });
