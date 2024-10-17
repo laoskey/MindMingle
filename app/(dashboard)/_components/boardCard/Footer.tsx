@@ -6,7 +6,7 @@ import { Star } from "lucide-react";
 interface FooterProps {
   isFaorite: boolean;
   title: string;
-  authorLabel: string;
+  authorLabel?: string;
   createdAtlebal: string;
   onClick: () => void;
   disabled: boolean;
