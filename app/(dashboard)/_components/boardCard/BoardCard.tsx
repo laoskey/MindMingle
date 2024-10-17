@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Overlay } from "./Overlay";
 import { useAuth } from "@clerk/clerk-react";
 import { Footer } from "./Footer";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BoardCardProps {
   id: string;
@@ -49,3 +50,11 @@ export function BoardCard({ id, title, imageUrl, authorId, authorName, createdAt
     </Link>
   );
 }
+
+BoardCard.Skeleton = function BoardCardSkeleton() {
+  return (
+    <div className=' aspect-[100/127] rounded-lg overflow-hidden'>
+      <Skeleton className='h-full w-full' />
+    </div>
+  );
+};
