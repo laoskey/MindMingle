@@ -51,3 +51,28 @@ export const remove = mutation({
     await ctx.db.delete(args.id);
   },
 });
+
+export const update = mutation({
+  args: { id: v.id("boards"), title: v.string() },
+  handler: async (ctx, args) => {
+    const identity = ctx.auth.getUserIdentity();
+    const title = args.title.trim();
+
+    if (!identity) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!title) {
+      throw new Error("Title is required");
+    }
+    if (title.length > 60) {
+      throw new Error("Title can not be longer than 60 characters");
+    }
+
+    //TODO: Later check to update favorite relations as well
+    const board = await ctx.db.patch(args.id, {
+      title: args.title,
+    });
+    return board;
+  },
+});

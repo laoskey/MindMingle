@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
+import { ModalProvider } from "@/providers/ModalProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,6 +42,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Toaster />
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </ConvexClientProvider>

@@ -9,6 +9,7 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { api } from "@/convex/_generated/api";
 import { ConfirmModel } from "./ConfirmModel";
 import { Button } from "./ui/button";
+import { useRenameModal } from "@/lib/store/useRenameModal";
 
 interface ActionsProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ interface ActionsProps {
 }
 export function Actions({ children, side, sideOffset, id, title }: ActionsProps) {
   const { mutate, pending } = useApiMutation(api.board.remove);
-
+  const { isOpen } = useRenameModal();
   const onCopyLink = () => {
     navigator.clipboard
       .writeText(`${window.location.origin}/board/${id}`)
