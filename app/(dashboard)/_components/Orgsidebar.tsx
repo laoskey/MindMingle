@@ -23,7 +23,7 @@ export function Orgsidebar() {
             width={60}
             className=' rounded-full  '
           />{" "}
-          <span className={cn(" font-semibold text-2xl z-10", font.className)}>MindMingle</span>
+          <span className={cn(" font-semibold text-2xl z-10", font.className)}>MindM</span>
         </div>
       </Link>
       <OrganizationSwitcher

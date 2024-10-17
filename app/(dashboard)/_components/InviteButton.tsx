@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { OrganizationProfile } from "@clerk/clerk-react";
-import { UserProfile } from "@clerk/nextjs";
 
 import { Plus } from "lucide-react";
 
