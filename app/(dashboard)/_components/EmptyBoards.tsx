@@ -3,7 +3,22 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
+import { api } from "@/convex/_generated/api";
+import { useMutation } from "convex/react";
+import { useOrganization } from "@clerk/clerk-react";
+
 export function EmptyBoards() {
+  const create = useMutation(api.board.create);
+  const { organization } = useOrganization();
+  function onClick() {
+    if (!organization) {
+      return;
+    }
+    create({
+      orgId: organization.id,
+      title: "Untitled",
+    });
+  }
   return (
     <div className='h-full flex flex-col justify-center items-center mt-12'>
       <Image
@@ -17,6 +32,7 @@ export function EmptyBoards() {
       <Button
         size={"lg"}
         className='mt-3'
+        onClick={onClick}
       >
         Create board
       </Button>{" "}
