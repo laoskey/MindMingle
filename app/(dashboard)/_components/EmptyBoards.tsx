@@ -6,18 +6,35 @@ import Image from "next/image";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { useOrganization } from "@clerk/clerk-react";
+import { useApiMutation } from "@/hooks/use-api-mutation";
+// import { toast } from "sonner";
+import { error } from "console";
+// import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 
 export function EmptyBoards() {
-  const create = useMutation(api.board.create);
+  const { mutate, pending } = useApiMutation(api.board.create);
   const { organization } = useOrganization();
   function onClick() {
     if (!organization) {
       return;
     }
-    create({
+
+    mutate({
       orgId: organization.id,
       title: "Untitled",
-    });
+    })
+      .then((id) => {
+        toast({ title: "Board created", duration: 1000 });
+        // toast("Board created", {
+        //   description: "yyyy",
+        // });
+        // // To redireact the id page
+      })
+      .catch(() => {
+        toast({ title: "Failed to create board" });
+        // toast.error("Failed to create board");
+      });
   }
   return (
     <div className='h-full flex flex-col justify-center items-center mt-12'>
@@ -33,6 +50,7 @@ export function EmptyBoards() {
         size={"lg"}
         className='mt-3'
         onClick={onClick}
+        disabled={pending}
       >
         Create board
       </Button>{" "}
