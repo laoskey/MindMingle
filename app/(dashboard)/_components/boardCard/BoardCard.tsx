@@ -43,8 +43,8 @@ export function BoardCard({ id, title, imageUrl, authorId, authorName, createdAt
     }
   }
   return (
-    <Link href={`/`}>
-      {/* <Link href={`/board/${id}`}> */}
+    // <Link href={`/`}>
+    <Link href={`/board/${id}`}>
       <div className='group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden'>
         <div className='relative flex-1 bg-amber-50'>
           <Image
