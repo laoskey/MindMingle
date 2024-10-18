@@ -11,8 +11,10 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { error } from "console";
 // import { toast } from "sonner";
 import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export function EmptyBoards() {
+  const router = useRouter();
   const { mutate, pending } = useApiMutation(api.board.create);
   const { organization } = useOrganization();
   function onClick() {
@@ -29,7 +31,7 @@ export function EmptyBoards() {
         // toast("Board created", {
         //   description: "yyyy",
         // });
-        // // To redireact the id page
+        router.push(`/board/${id}`);
       })
       .catch(() => {
         toast({ title: "Failed to create board" });
