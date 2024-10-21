@@ -3,7 +3,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToolButton } from "./ToolButton";
 import { Circle, MousePointer2, Pencil, Redo2, Square, StickyNote, Type, Undo2 } from "lucide-react";
-import { CanvasState } from "@/type/Canvas";
+import { CanvasMode, CanvasState } from "@/type/Canvas";
 
 interface ToolBarProps {
   canvasState: CanvasState;
@@ -20,14 +20,14 @@ export function ToolBar({ canvasState, setCanvasState, undo, redo, canRedo, canU
         <ToolButton
           label='select'
           icon={MousePointer2}
-          onClick={() => {}}
-          isActive={false}
+          onClick={() => setCanvasState({ mode: CanvasMode.None })}
+          isActive={canvasState.mode === CanvasMode.None}
         />
         <ToolButton
           label='text'
           icon={Type}
-          onClick={() => {}}
-          isActive={false}
+          onClick={() => setCanvasState({ mode: CanvasMode.Inserting })}
+          isActive={canvasState.mode === CanvasMode.Inserting}
         />
         <ToolButton
           label='Stiky note'
@@ -58,14 +58,15 @@ export function ToolBar({ canvasState, setCanvasState, undo, redo, canRedo, canU
         <ToolButton
           label='Undo'
           icon={Undo2}
-          onClick={() => {}}
+          onClick={undo}
           isActive={false}
+          isDisable={!canUndo}
         />
         <ToolButton
           label='Redo'
           icon={Redo2}
-          onClick={() => {}}
-          isDisable={true}
+          onClick={redo}
+          isDisable={!canRedo}
         />
       </div>
     </div>

@@ -88,6 +88,7 @@ export function Info({ boardId }: InfoProps) {
             sideOffset={10}
           >
             <Button
+              asChild
               size={"icon"}
               variant={"board"}
             >
