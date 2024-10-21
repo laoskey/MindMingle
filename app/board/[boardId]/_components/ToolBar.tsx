@@ -1,4 +1,7 @@
 "use client";
+
+import { Skeleton } from "@/components/ui/skeleton";
+
 // interface ToolBarProps {}
 export function ToolBar() {
   return (
@@ -16,3 +19,11 @@ export function ToolBar() {
     </div>
   );
 }
+
+ToolBar.Skeleton = function ToolbarSkeleton() {
+  return (
+    <div className='shadow-md rounded-md bg-white h-[360px] w-[52px] absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4'>
+      <Skeleton className=' h-full w-full bg-muted-400' />
+    </div>
+  );
+};
