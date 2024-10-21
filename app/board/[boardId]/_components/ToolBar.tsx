@@ -2,8 +2,17 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToolButton } from "./ToolButton";
-import { Circle, MousePointer2, Pencil, Redo2, Square, StickyNote, Type, Undo2 } from "lucide-react";
-import { CanvasMode, CanvasState } from "@/type/Canvas";
+import {
+  Circle,
+  MousePointer2,
+  Pencil,
+  Redo2,
+  Square,
+  StickyNote,
+  Type,
+  Undo2,
+} from "lucide-react";
+import { CanvasMode, CanvasState, LayerType } from "@/type/Canvas";
 
 interface ToolBarProps {
   canvasState: CanvasState;
@@ -13,7 +22,14 @@ interface ToolBarProps {
   canUndo: boolean;
   canRedo: boolean;
 }
-export function ToolBar({ canvasState, setCanvasState, undo, redo, canRedo, canUndo }: ToolBarProps) {
+export function ToolBar({
+  canvasState,
+  setCanvasState,
+  undo,
+  redo,
+  canRedo,
+  canUndo,
+}: ToolBarProps) {
   return (
     <div className=' absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4'>
       <div className=' bg-white rounded-md p-1.5 flex gap-y-1 flex-col items-center shadow-md'>
@@ -21,37 +37,73 @@ export function ToolBar({ canvasState, setCanvasState, undo, redo, canRedo, canU
           label='select'
           icon={MousePointer2}
           onClick={() => setCanvasState({ mode: CanvasMode.None })}
-          isActive={canvasState.mode === CanvasMode.None}
+          isActive={
+            canvasState.mode === CanvasMode.None ||
+            canvasState.mode === CanvasMode.Translating ||
+            canvasState.mode === CanvasMode.SelecctionNet ||
+            canvasState.mode === CanvasMode.Pressinng ||
+            canvasState.mode === CanvasMode.Resizing
+          }
         />
         <ToolButton
           label='text'
           icon={Type}
-          onClick={() => setCanvasState({ mode: CanvasMode.Inserting })}
-          isActive={canvasState.mode === CanvasMode.Inserting}
+          onClick={() =>
+            setCanvasState({ mode: CanvasMode.Inserting, layertype: LayerType.Text })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layertype === LayerType.Text
+          }
         />
         <ToolButton
           label='Stiky note'
           icon={StickyNote}
-          onClick={() => {}}
-          isActive={false}
+          onClick={() =>
+            setCanvasState({ mode: CanvasMode.Inserting, layertype: LayerType.Note })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layertype === LayerType.Note
+          }
         />
         <ToolButton
           label='Rectangle'
           icon={Square}
-          onClick={() => {}}
-          isActive={false}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              layertype: LayerType.Reacangle,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layertype === LayerType.Reacangle
+          }
         />
         <ToolButton
           label='Ellipse'
           icon={Circle}
-          onClick={() => {}}
-          isActive={false}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              layertype: LayerType.Ellipse,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layertype === LayerType.Ellipse
+          }
         />
         <ToolButton
           label='Pen'
           icon={Pencil}
-          onClick={() => {}}
-          isActive={false}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Pencil,
+            })
+          }
+          isActive={canvasState.mode === CanvasMode.Pencil}
         />
       </div>
       <div className='bg-white rounded-md p-1.5 flex flex-col items-center shadow-md'>
@@ -73,10 +125,10 @@ export function ToolBar({ canvasState, setCanvasState, undo, redo, canRedo, canU
   );
 }
 
-ToolBar.Skeleton = function ToolbarSkeleton() {
+export function ToolbarSkeleton() {
   return (
     <div className='shadow-md rounded-md bg-white h-[360px] w-[52px] absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4'>
       <Skeleton className=' h-full w-full bg-muted-400' />
     </div>
   );
-};
+}

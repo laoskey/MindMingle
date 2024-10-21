@@ -35,7 +35,7 @@ export function Info({ boardId }: InfoProps) {
   const { onOpen } = useRenameModal();
 
   if (!data) {
-    return Info.Skeleton;
+    return <InfoSkeleton />;
   }
   return (
     <div className=' absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md'>
@@ -56,7 +56,11 @@ export function Info({ boardId }: InfoProps) {
               height={40}
               width={40}
             />
-            <span className={cn("font-semibold text-xl ml-2 text-black", font.className)}>Board</span>
+            <span
+              className={cn("font-semibold text-xl ml-2 text-black", font.className)}
+            >
+              Board
+            </span>
           </Link>
         </Button>
       </Hint>
@@ -101,10 +105,10 @@ export function Info({ boardId }: InfoProps) {
   );
 }
 
-Info.Skeleton = function InfoSkeleton() {
+export function InfoSkeleton() {
   return (
     <div className='w-[300px] absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md'>
       <Skeleton className=' h-full w-full bg-muted-400' />
     </div>
   );
-};
+}

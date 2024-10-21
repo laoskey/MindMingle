@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useOthers, useSelf, useUser } from "@liveblocks/react/suspense";
 import { UserAvatar } from "./UserAvatar";
 import { on } from "events";
-import { connectionIdToNumber } from "@/lib/utils";
+import { connectionIdToColor } from "@/lib/utils";
 
 const MAX_SHOW_USERS = 2;
 // interface PerticipantsProps {}
@@ -20,7 +20,7 @@ export function Perticipants() {
         {users.slice(0, MAX_SHOW_USERS).map(({ connectionId, info }) => {
           return (
             <UserAvatar
-              borderColor={connectionIdToNumber(connectionId)}
+              borderColor={connectionIdToColor(connectionId)}
               src={info.picture}
               key={connectionId}
               name={info.name}
@@ -30,7 +30,7 @@ export function Perticipants() {
         })}
         {currentUser && (
           <UserAvatar
-            borderColor={connectionIdToNumber(currentUser.connectionId)}
+            borderColor={connectionIdToColor(currentUser.connectionId)}
             src={currentUser.info.picture}
             name={`${currentUser.info.name} (You)`}
             fallback={currentUser.info?.name?.[0]}
@@ -46,10 +46,10 @@ export function Perticipants() {
     </div>
   );
 }
-Perticipants.Skeleton = function PerticipantsSkeleton() {
+export function PerticipantsSkeleton() {
   return (
     <div className='w-[100px] absolute top-2 h-12 right-2 bg-white rounded-md p-3 flex items-center shadow-md'>
       <Skeleton className=' h-full w-full bg-muted-400' />
     </div>
   );
-};
+}
