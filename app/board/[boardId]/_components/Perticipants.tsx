@@ -1,10 +1,50 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { useOthers, useSelf, useUser } from "@liveblocks/react/suspense";
+import { UserAvatar } from "./UserAvatar";
+import { on } from "events";
+import { connectionIdToNumber } from "@/lib/utils";
 
+const MAX_SHOW_USERS = 2;
 // interface PerticipantsProps {}
 export function Perticipants() {
-  return <div className='absolute top-2 h-12 right-2 bg-white rounded-md p-3 flex items-center shadow-md'>List of the users</div>;
+  const users = useOthers();
+  const currentUser = useSelf();
+
+  const hasMoreUSers = users.length > MAX_SHOW_USERS;
+
+  return (
+    <div className='absolute top-2 h-12 right-2 bg-white rounded-md p-3 flex items-center shadow-md'>
+      <div className='flex gap-x-2'>
+        {users.slice(0, MAX_SHOW_USERS).map(({ connectionId, info }) => {
+          return (
+            <UserAvatar
+              borderColor={connectionIdToNumber(connectionId)}
+              src={info.picture}
+              key={connectionId}
+              name={info.name}
+              fallback={info?.name?.[0] || "Teammate"}
+            />
+          );
+        })}
+        {currentUser && (
+          <UserAvatar
+            borderColor={connectionIdToNumber(currentUser.connectionId)}
+            src={currentUser.info.picture}
+            name={`${currentUser.info.name} (You)`}
+            fallback={currentUser.info?.name?.[0]}
+          />
+        )}
+        {hasMoreUSers && (
+          <UserAvatar
+            name={`${users.length - MAX_SHOW_USERS} more`}
+            fallback={`+${users.length - MAX_SHOW_USERS}`}
+          />
+        )}
+      </div>
+    </div>
+  );
 }
 Perticipants.Skeleton = function PerticipantsSkeleton() {
   return (
