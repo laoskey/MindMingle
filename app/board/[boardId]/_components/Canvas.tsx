@@ -26,6 +26,7 @@ import { CursorPresence } from "./CursorPresence";
 import { connectionIdToColor, pointEventTocavansPoint } from "@/lib/utils";
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./LayerPreview";
+import { SelectionBox } from "./SelectionBox";
 
 const MAX_LAYERS = Number(process.env.MAX_SHOW_LAYERS) as number;
 
@@ -188,7 +189,7 @@ export function Canvas({ boardId }: CanvasProps) {
               selectionColor={layerIdsToColorSelection[layerId]}
             />
           ))}
-
+          <SelectionBox onResizeHandlePointerDown={() => {}} />
           <CursorPresence />
         </g>
       </svg>
