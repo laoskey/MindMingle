@@ -1,5 +1,6 @@
 "use client";
 
+import { colorToCss } from "@/lib/utils";
 import { RectangleLayer } from "@/type/Canvas";
 import React from "react";
 
@@ -16,7 +17,7 @@ export function Reacangle({
   selectionColor,
 }: ReacangleProps) {
   const { x, y, width, height, fill } = layer;
-
+  // console.log(fill);
   return (
     <rect
       className='drop-shadow-md'
@@ -27,8 +28,8 @@ export function Reacangle({
       width={width}
       height={height}
       strokeWidth={1}
-      fill='#000'
-      stroke='transparent'
+      fill={fill ? colorToCss(fill) : "#000"}
+      stroke={selectionColor || "transparent"}
     ></rect>
   );
 }
