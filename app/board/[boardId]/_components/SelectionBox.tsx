@@ -9,7 +9,7 @@ interface SelectionBoxProps {
   onResizeHandlePointerDown: (corner: Side, initialBounds: XYWH) => void;
 }
 
-const HANDLE_WIDTH = Number(process.env.HANDLE_WIDTH) as number;
+const HANDLE_WIDTH = 8;
 
 export const SelectionBox = memo(
   ({ onResizeHandlePointerDown }: SelectionBoxProps) => {
@@ -27,6 +27,7 @@ export const SelectionBox = memo(
     if (!bounds) {
       return;
     }
+
     return (
       <>
         <rect
@@ -37,6 +38,145 @@ export const SelectionBox = memo(
           width={bounds.width}
           height={bounds.height}
         />
+        {isShowingHandles && (
+          <>
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "nw-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x - HANDLE_WIDTH / 2}px, ${bounds.y - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "ns-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x + bounds.width / 2 - HANDLE_WIDTH / 2}px,${bounds.y - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "nesw-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x - HANDLE_WIDTH / 2 + bounds.width}px, ${bounds.y - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "ew-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x - HANDLE_WIDTH / 2 + bounds.width}px, ${bounds.y + bounds.height / 2 - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "ew-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x - HANDLE_WIDTH / 2 + bounds.width}px, ${bounds.y + bounds.height / 2 - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "nw-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x - HANDLE_WIDTH / 2 + bounds.width}px, ${bounds.y + bounds.height - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "ns-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x - HANDLE_WIDTH / 2 + bounds.width / 2}px, ${bounds.y + bounds.height - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "ew-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x - HANDLE_WIDTH / 2}px, ${bounds.y + bounds.height / 2 - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+            <rect
+              className=' fill-white stroke-1 stroke-blue-500'
+              x={0}
+              y={0}
+              style={{
+                cursor: "nesw-resize",
+                width: `${HANDLE_WIDTH}px`,
+                height: `${HANDLE_WIDTH}px`,
+                transform: `translate(${bounds.x - HANDLE_WIDTH / 2}px, ${bounds.y + bounds.height - HANDLE_WIDTH / 2}px)`,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                // TODO Add resize handler
+              }}
+            />
+          </>
+        )}
       </>
     );
   }
