@@ -3,6 +3,7 @@
 import { LayerType } from "@/type/Canvas";
 import { useStorage } from "@liveblocks/react/suspense";
 import React, { memo } from "react";
+import { Reacangle } from "./Reacangle";
 
 interface LayerPreviewProps {
   id: string;
@@ -17,15 +18,14 @@ export const LayerPreview = memo(
     }
     switch (layer.type) {
       case LayerType.Reacangle:
-        return <div className=''>Reacangle</div>;
-      //   case LayerType.Ellipse:
-      //     return <div className=''>Ellipase</div>;
-      //   case LayerType.Path:
-      //     return <div className=''>path</div>;
-      //   case LayerType.Text:
-      //     return <div className=''>text</div>;
-      //   case LayerType.Note:
-      //     return <div className=''>text</div>;
+        return (
+          <Reacangle
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          />
+        );
 
       default:
         console.log("Unknown layer type");

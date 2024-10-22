@@ -26,7 +26,7 @@ import { pointEventTocavansPoint } from "@/lib/utils";
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./LayerPreview";
 
-const MAX_LAYERS = 100;
+const MAX_LAYERS = Number(process.env.MAX_SHOW_LAYERS) as number;
 
 interface CanvasProps {
   boardId: string;
@@ -88,22 +88,21 @@ export function Canvas({ boardId }: CanvasProps) {
     }));
   }, []);
 
-  const onPointerMove = useMutation(({ setMyPresence }, e: React.PointerEvent) => {
-    e.preventDefault();
-    const current = pointEventTocavansPoint(e, camera);
+  const onPointerMove = useMutation(
+    ({ setMyPresence }, e: React.PointerEvent) => {
+      e.preventDefault();
+      const current = pointEventTocavansPoint(e, camera);
 
-    setMyPresence({ cursor: current });
-  }, []);
+      setMyPresence({ cursor: current });
+    },
+    []
+  );
 
   // const updatePoint = useUpdateMyPresence();
   const onPointerUp = useMutation(
     ({}, e) => {
       const point = pointEventTocavansPoint(e, camera);
 
-      console.log({
-        point,
-        mode: canvaState.mode,
-      });
       if (canvaState.mode === CanvasMode.Inserting) {
         insertLayer(canvaState.layertype, point);
       } else {
@@ -141,7 +140,9 @@ export function Canvas({ boardId }: CanvasProps) {
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
       >
-        <g style={{ transform: `translate(${camera.x}px,${camera.y}px) ` }}>
+        <g
+          style={{ transform: `translate(${camera.x}px,${camera.y}px) ` }}
+        >
           {layerIds.map((layerId) => (
             <LayerPreview
               key={layerId}
