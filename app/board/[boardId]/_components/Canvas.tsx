@@ -100,8 +100,15 @@ export function Canvas({ boardId }: CanvasProps) {
   const onPointerUp = useMutation(
     ({}, e) => {
       const point = pointEventTocavansPoint(e, camera);
-
-      if (canvaState.mode === CanvasMode.Inserting) {
+      if (
+        canvaState.mode === CanvasMode.None ||
+        canvaState.mode === CanvasMode.Pressinng
+      ) {
+        console.log("UNSELECT");
+        setCanvasState({
+          mode: CanvasMode.None,
+        });
+      } else if (canvaState.mode === CanvasMode.Inserting) {
         insertLayer(canvaState.layertype, point);
       } else {
         setCanvasState({ mode: CanvasMode.None });
@@ -110,6 +117,20 @@ export function Canvas({ boardId }: CanvasProps) {
       history.resume();
     },
     [camera, canvaState, history, insertLayer]
+  );
+
+  const onPointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      const point = pointEventTocavansPoint(e, camera);
+      if (canvaState.mode === CanvasMode.Inserting) {
+        return;
+      }
+
+      // TODO Add case for drawing
+
+      setCanvasState({ origin: point, mode: CanvasMode.Pressinng });
+    },
+    [camera, canvaState.mode, setCanvasState]
   );
   const onPointerLeave = useMutation(({ setMyPresence }) => {
     setMyPresence({ cursor: null });
@@ -169,17 +190,48 @@ export function Canvas({ boardId }: CanvasProps) {
     },
     [canvaState]
   );
+
+  const translateSelectedLayer = useMutation(
+    ({ storage, self }, point: Point) => {
+      if (canvaState.mode !== CanvasMode.Translating) {
+        return;
+      }
+
+      const offset = {
+        x: point.x - canvaState.current.x,
+        y: point.y - canvaState.current.y,
+      };
+      const liveLayers = storage.get("layers");
+
+      for (const id of self.presence.selection) {
+        const layer = liveLayers.get(id);
+
+        if (layer) {
+          layer.update({
+            x: layer.get("x") + offset.x,
+            y: layer.get("y") + offset.y,
+          });
+        }
+      }
+
+      setCanvasState({ mode: CanvasMode.Translating, current: point });
+    },
+    [canvaState]
+  );
   const onPointerMove = useMutation(
     ({ setMyPresence }, e: React.PointerEvent) => {
       e.preventDefault();
       const current = pointEventTocavansPoint(e, camera);
-      if (canvaState.mode === CanvasMode.Resizing) {
+
+      if (canvaState.mode === CanvasMode.Translating) {
+        translateSelectedLayer(current);
+      } else if (canvaState.mode === CanvasMode.Resizing) {
         resizeSelectedLayer(current);
       }
 
       setMyPresence({ cursor: current });
     },
-    [canvaState, camera, resizeSelectedLayer]
+    [canvaState, camera, resizeSelectedLayer, translateSelectedLayer]
   );
 
   const selections = useOthersMapped((other) => other.presence.selection);
@@ -216,6 +268,7 @@ export function Canvas({ boardId }: CanvasProps) {
         //   const current = pointEventTocavansPoint(e, camera);
         //   updatePoint({ cursor: current });
         // }}
+        onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
