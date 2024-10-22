@@ -24,6 +24,7 @@ import React, { useCallback, useState } from "react";
 import { CursorPresence } from "./CursorPresence";
 import { pointEventTocavansPoint } from "@/lib/utils";
 import { LiveObject } from "@liveblocks/client";
+import { LayerPreview } from "./LayerPreview";
 
 const MAX_LAYERS = 100;
 
@@ -31,7 +32,7 @@ interface CanvasProps {
   boardId: string;
 }
 export function Canvas({ boardId }: CanvasProps) {
-  const layerId = useStorage((root) => root.layerIds);
+  const layerIds = useStorage((root) => root.layerIds);
   const [canvaState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None,
   });
@@ -95,6 +96,24 @@ export function Canvas({ boardId }: CanvasProps) {
   }, []);
 
   // const updatePoint = useUpdateMyPresence();
+  const onPointerUp = useMutation(
+    ({}, e) => {
+      const point = pointEventTocavansPoint(e, camera);
+
+      console.log({
+        point,
+        mode: canvaState.mode,
+      });
+      if (canvaState.mode === CanvasMode.Inserting) {
+        insertLayer(canvaState.layertype, point);
+      } else {
+        setCanvasState({ mode: CanvasMode.None });
+      }
+
+      history.resume();
+    },
+    [camera, canvaState, history, insertLayer]
+  );
   const onPointerLeave = useMutation(({ setMyPresence }) => {
     setMyPresence({ cursor: null });
   }, []);
@@ -118,10 +137,20 @@ export function Canvas({ boardId }: CanvasProps) {
         //   const current = pointEventTocavansPoint(e, camera);
         //   updatePoint({ cursor: current });
         // }}
+        onPointerUp={onPointerUp}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
       >
         <g style={{ transform: `translate(${camera.x}px,${camera.y}px) ` }}>
+          {layerIds.map((layerId) => (
+            <LayerPreview
+              key={layerId}
+              id={layerId}
+              onLayerPointerDown={() => {}}
+              selectionColor={"#000"}
+            />
+          ))}
+
           <CursorPresence />
         </g>
       </svg>
