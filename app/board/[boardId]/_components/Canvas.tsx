@@ -28,6 +28,7 @@ import { CursorPresence } from "./CursorPresence";
 import {
   connectionIdToColor,
   findIntersetingLayerWithRectangle,
+  penPointsToPathLayer,
   pointEventTocavansPoint,
   resizeBounds,
 } from "@/lib/utils";
@@ -104,6 +105,37 @@ export function Canvas({ boardId }: CanvasProps) {
     }
   }, []);
   // const updatePoint = useUpdateMyPresence();
+  const insertPath = useMutation(
+    ({ storage, setMyPresence, self }) => {
+      const liveLayers = storage.get("layers");
+      const { penciDraft } = self.presence;
+
+      if (
+        penciDraft == null ||
+        penciDraft.length < 2 ||
+        liveLayers.size >= MAX_LAYERS
+      ) {
+        setMyPresence({
+          penciDraft: null,
+        });
+        return;
+      }
+
+      const id = nanoid();
+
+      liveLayers.set(
+        id,
+        new LiveObject(penPointsToPathLayer(penciDraft, lastUsedColor))
+      );
+
+      const liveLayerIds = storage.get("layerIds");
+      liveLayerIds.push(id);
+
+      setMyPresence({ penciDraft: null });
+      setCanvasState({ mode: CanvasMode.Pencil });
+    },
+    [lastUsedColor]
+  );
   const onPointerUp = useMutation(
     ({}, e) => {
       const point = pointEventTocavansPoint(e, camera);
@@ -115,6 +147,8 @@ export function Canvas({ boardId }: CanvasProps) {
         setCanvasState({
           mode: CanvasMode.None,
         });
+      } else if (canvaState.mode === CanvasMode.Pencil) {
+        insertPath();
       } else if (canvaState.mode === CanvasMode.Inserting) {
         insertLayer(canvaState.layertype, point);
       } else {
@@ -123,9 +157,26 @@ export function Canvas({ boardId }: CanvasProps) {
 
       history.resume();
     },
-    [camera, canvaState, history, insertLayer, unSelectLayers]
+    [
+      camera,
+      canvaState,
+      history,
+      insertLayer,
+      setCanvasState,
+      unSelectLayers,
+      insertPath,
+    ]
   );
 
+  const startDrawing = useMutation(
+    ({ setMyPresence }, point: Point, pressure: number) => {
+      setMyPresence({
+        penciDraft: [[point.x, point.y, pressure]],
+        penColor: lastUsedColor,
+      });
+    },
+    [lastUsedColor]
+  );
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
       const point = pointEventTocavansPoint(e, camera);
@@ -133,11 +184,17 @@ export function Canvas({ boardId }: CanvasProps) {
         return;
       }
 
-      // TODO Add case for drawing
+      if (canvaState.mode === CanvasMode.Pencil) {
+        startDrawing(point, e.pressure);
+        return;
+      }
 
-      setCanvasState({ origin: point, mode: CanvasMode.Pressinng });
+      setCanvasState({
+        origin: point,
+        mode: CanvasMode.Pressinng,
+      });
     },
-    [camera, canvaState.mode, setCanvasState]
+    [camera, canvaState.mode, setCanvasState, startDrawing]
   );
   const onPointerLeave = useMutation(({ setMyPresence }) => {
     setMyPresence({ cursor: null });
@@ -262,6 +319,30 @@ export function Canvas({ boardId }: CanvasProps) {
     },
     [layerIds]
   );
+  const continueDrawing = useMutation(
+    ({ self, setMyPresence }, point: Point, e: React.PointerEvent) => {
+      const { penciDraft } = self.presence;
+
+      if (
+        canvaState.mode !== CanvasMode.Pencil ||
+        e.buttons !== 1 ||
+        penciDraft == null
+      ) {
+        return;
+      }
+
+      setMyPresence({
+        cursor: point,
+        penciDraft:
+          penciDraft.length === 1 &&
+          penciDraft[0][0] === point.x &&
+          penciDraft[0][1] === point.y
+            ? penciDraft
+            : [...penciDraft, [point.x, point.y, e.pressure]],
+      });
+    },
+    [canvaState.mode]
+  );
 
   const onPointerMove = useMutation(
     ({ setMyPresence }, e: React.PointerEvent) => {
@@ -276,11 +357,19 @@ export function Canvas({ boardId }: CanvasProps) {
         translateSelectedLayer(current);
       } else if (canvaState.mode === CanvasMode.Resizing) {
         resizeSelectedLayer(current);
+      } else if (canvaState.mode === CanvasMode.Pencil) {
+        continueDrawing(current, e);
       }
 
       setMyPresence({ cursor: current });
     },
-    [canvaState, camera, resizeSelectedLayer, translateSelectedLayer]
+    [
+      canvaState,
+      camera,
+      resizeSelectedLayer,
+      translateSelectedLayer,
+      continueDrawing,
+    ]
   );
 
   const selections = useOthersMapped((other) => other.presence.selection);

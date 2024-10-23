@@ -26,13 +26,17 @@ export function Room({ children, roomId, fallback }: RoomProps) {
         initialPresence={{
           cursor: null,
           selection: [],
+          penciDraft: null,
+          penColor: null,
         }}
         initialStorage={{
           layers: new LiveMap<string, LiveObject<Layer>>(),
           layerIds: new LiveList([]), //TODO: may add the username next
         }}
       >
-        <ClientSideSuspense fallback={fallback}>{() => children}</ClientSideSuspense>
+        <ClientSideSuspense fallback={fallback}>
+          {() => children}
+        </ClientSideSuspense>
       </RoomProvider>
     </LiveblocksProvider>
   );
