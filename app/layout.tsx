@@ -5,9 +5,8 @@ import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
-import { Button } from "@/components/ui/button";
 import { ModalProvider } from "@/providers/ModalProvider";
+import { Suspense } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,19 +32,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ConvexClientProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster />
-            <ModalProvider />
-            {children}
-          </ThemeProvider>
-        </ConvexClientProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Suspense>
+          <ConvexClientProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster />
+              <ModalProvider />
+              {children}
+            </ThemeProvider>
+          </ConvexClientProvider>
+        </Suspense>
       </body>
     </html>
   );
