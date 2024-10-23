@@ -340,6 +340,20 @@ export function Canvas({ boardId }: CanvasProps) {
           <SelectionBox
             onResizeHandlePointerDown={onResizeHandlePointerDown}
           />
+          {canvaState.mode === CanvasMode.SelecctionNet &&
+            canvaState.current != null && (
+              <rect
+                className='fill-blue-500/5 stroke-blue-500 stroke-1'
+                x={Math.min(canvaState.origin.x, canvaState.current.x)}
+                y={Math.min(canvaState.origin.y, canvaState.current.y)}
+                width={Math.abs(
+                  canvaState.origin.x - canvaState.current.x
+                )}
+                height={Math.abs(
+                  canvaState.origin.y - canvaState.current.y
+                )}
+              />
+            )}
           <CursorPresence />
         </g>
       </svg>
