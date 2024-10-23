@@ -6,6 +6,7 @@ import React, { memo } from "react";
 import { Reacangle } from "./Reacangle";
 import { Ellipase } from "./Ellipase";
 import { Text } from "./Text";
+import { Note } from "./Note";
 
 interface LayerPreviewProps {
   id: string;
@@ -20,6 +21,16 @@ export const LayerPreview = memo(
       return;
     }
     switch (layer.type) {
+      case LayerType.Note:
+        return (
+          <Note
+            id={id}
+            layer={layer}
+            onPointerDown={onLayerPointerDown}
+            selectionColor={selectionColor}
+          />
+        );
+
       case LayerType.Text:
         return (
           <Text

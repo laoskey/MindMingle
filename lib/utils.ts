@@ -27,6 +27,10 @@ export function colorToCss(color: Color) {
 
   return rc;
 }
+export function getConstrastingTextColor(color: Color) {
+  const luminance = 0.299 * color.r + 0.578 * color.g + 0.114 * color.b;
+  return luminance > 182 ? "black" : "white";
+}
 
 export function resizeBounds(
   bounds: XYWH,
