@@ -7,7 +7,7 @@ interface PathProps {
   y: number;
   points: number[][];
   fill: string;
-  onPointerDown: (e: React.PointerEvent) => void;
+  onPointerDown?: (e: React.PointerEvent) => void;
   //   selectionColor?: string;
   stroke?: string;
 }

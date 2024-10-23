@@ -7,6 +7,7 @@ import {
   useHistory,
   useMutation,
   useOthersMapped,
+  useSelf,
   useStorage,
   useUpdateMyPresence,
 } from "@liveblocks/react/suspense";
@@ -26,6 +27,7 @@ import {
 import React, { useCallback, useMemo, useState } from "react";
 import { CursorPresence } from "./CursorPresence";
 import {
+  colorToCss,
   connectionIdToColor,
   findIntersetingLayerWithRectangle,
   penPointsToPathLayer,
@@ -36,6 +38,7 @@ import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./LayerPreview";
 import { SelectionBox } from "./SelectionBox";
 import { SelectedTools } from "./SelectedTools";
+import { Path } from "./Path";
 
 const MAX_LAYERS = Number(process.env.MAX_SHOW_LAYERS) as number;
 
@@ -44,6 +47,7 @@ interface CanvasProps {
 }
 export function Canvas({ boardId }: CanvasProps) {
   const layerIds = useStorage((root) => root.layerIds);
+  const pencilDraft = useSelf((me) => me.presence.penciDraft);
   const [canvaState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None,
   });
@@ -444,6 +448,14 @@ export function Canvas({ boardId }: CanvasProps) {
               />
             )}
           <CursorPresence />
+          {pencilDraft != null && pencilDraft.length > 0 && (
+            <Path
+              points={pencilDraft}
+              fill={colorToCss(lastUsedColor)}
+              x={0}
+              y={0}
+            />
+          )}
         </g>
       </svg>
     </main>
