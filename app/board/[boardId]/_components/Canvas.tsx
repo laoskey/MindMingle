@@ -33,6 +33,7 @@ import {
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./LayerPreview";
 import { SelectionBox } from "./SelectionBox";
+import { SelectedTools } from "./SelectedTools";
 
 const MAX_LAYERS = Number(process.env.MAX_SHOW_LAYERS) as number;
 
@@ -96,6 +97,11 @@ export function Canvas({ boardId }: CanvasProps) {
     }));
   }, []);
 
+  const unSelectLayers = useMutation(({ self, setMyPresence }) => {
+    if (self.presence.selection.length > 0) {
+      setMyPresence({ selection: [] }, { addToHistory: true });
+    }
+  }, []);
   // const updatePoint = useUpdateMyPresence();
   const onPointerUp = useMutation(
     ({}, e) => {
@@ -104,7 +110,7 @@ export function Canvas({ boardId }: CanvasProps) {
         canvaState.mode === CanvasMode.None ||
         canvaState.mode === CanvasMode.Pressinng
       ) {
-        console.log("UNSELECT");
+        unSelectLayers();
         setCanvasState({
           mode: CanvasMode.None,
         });
@@ -116,7 +122,7 @@ export function Canvas({ boardId }: CanvasProps) {
 
       history.resume();
     },
-    [camera, canvaState, history, insertLayer]
+    [camera, canvaState, history, insertLayer, unSelectLayers]
   );
 
   const onPointerDown = useCallback(
@@ -260,6 +266,10 @@ export function Canvas({ boardId }: CanvasProps) {
         canUndo={canUndo}
         undo={history.undo}
         redo={history.redo}
+      />
+      <SelectedTools
+        camera={camera}
+        setLastUsedColor={setLastUsedColor}
       />
       <svg
         className='h-[100vh] w-[100vw]'
