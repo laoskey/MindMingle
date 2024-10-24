@@ -2,7 +2,7 @@
 
 ## 引言：
 
-这是一个Clone自Miro的白板协作软件,主要由shadcn
+这是一个Clone自Miro的白板协作软件
 
 ## 项目标题和描述
 
@@ -33,6 +33,8 @@ MindMingle 使用Convex做后台存储，LiveBlocks作为白板协作通信。
 3.`npx convex run`
 
 4.`npm run dev`
+
+5.访问默认localhost:3000
 
 #### ProductionForVerCel:
 
