@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { ModalProvider } from "@/providers/ModalProvider";
 import { Suspense } from "react";
+import Loading from "@/components/auth/Loading";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,7 +36,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense>
+        <Suspense fallback={<Loading />}>
           <ConvexClientProvider>
             <ThemeProvider
               attribute='class'

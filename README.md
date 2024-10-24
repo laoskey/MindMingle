@@ -1,46 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
 
-First, run the development server:
+# MindMingle
 
-`````bash
-npx convex dev
-#or
-````bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-`````
+## 引言：
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+这是一个Clone自Miro的白板协作软件
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## 项目标题和描述
 
-To learn more about Next.js, take a look at the following resources:
+MindMingle 是一个基于**用户权限控制**的在线白板协作工具。用户可以创建协作白板，并邀请他人加入共同创作。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+MindMingle 使用Convex做后台存储，LiveBlocks作为白板协作通信。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 安装和使用说明
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+在使用之前，需要你分别配置Convex（存储协作board） 、Clerk(用户Authentication)、LiveBlocks(白板 Collaboration)，
 
-## Supports
+### 文档地址：
 
-Vercel
-Convex
-Clerk
-LiveBlocks
+[ConvexDocForNextJS](https://docs.convex.dev/quickstart/nextjs)
+
+[LiveBlocksForReact](https://liveblocks.io/docs/api-reference/liveblocks-react)
+
+[ClerkDocForNextJS](https://clerk.com/docs/quickstarts/nextjs)
+
+
+
+### 接下来：
+
+#### ForDevEnv:
+
+1.`npm i`
+
+2.配置env.local
+
+3.`npx convex run`
+
+4.`npm run dev`
+
+#### ProductionForVerCel:
+
+参考doc:[convexProdcuti0n](https://docs.convex.dev/production/hosting/custom)[Get started with Vercel](https://vercel.com/docs/getting-started-with-vercel)
+
+
+
+### 提供使用示例
+
+![](a0c975b09cd44191b93201f2a5f56a3c.jpg)![](49b0852b7d2840c2973a906feddcd930.jpg)
+
+## 项目结构和文件组织
+
+
+
+在开源项目中，清晰、有序的项目结构和文件组织至关重要。它不仅能帮助开发者快速理解和参与项目，也能使用户更容易地使用和贡献项目。
+
+
+
+### 项目的文件和目录结构
+
+![](bad1445ae97a45bd8f4b8c7718a33237.jpg)
+
+### 各个文件和目录的用途
+
+convex：convex配置文件，表结构、以及一些CRUD方法
+
+### 联系我：
+
+如果你有任何问题，欢迎给我留言或者发邮件到[teric0898@gmail.com](mailto:teric0898@gmail.com)
+
+
+
+### 在这里要特别感谢 Antonio 做出的巨大贡献
+
+
+
+### 最后：祝你玩得愉快！
+
+
+
+！
+
